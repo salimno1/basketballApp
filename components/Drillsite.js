@@ -172,7 +172,7 @@ export default function Drillsite() {
             fontWeight: "bold",
             color: "black",
             backgroundColor: "white",
-            width: 90,
+            width: 75,
             borderWidth: 2,
             marginLeft: 50,
           }}
