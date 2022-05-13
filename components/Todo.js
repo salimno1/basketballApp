@@ -10,7 +10,7 @@ const Todo = (props) => {
       <View style={styles.itemLeft}>
         <View style={styles.square}></View>
       </View>
-      <Text style={styles.itemText}>{props.text}</Text>
+      <Text style={styles.itemText}>{text}</Text>
       <View style={styles.buttonDiv}>
         <TouchableOpacity onPress={removeTodo}>
           <View style={styles.circular1}></View>
