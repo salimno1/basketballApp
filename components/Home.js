@@ -26,7 +26,8 @@ export default function Home({ navigation }) {
         <Text style={styles.container}>Ready to put in some work ?</Text>
       </View>
       <Button
-        title="Say no more"
+        color={"white"}
+        title="Lets go"
         onPress={() => navigation.navigate("Main")}
       ></Button>
     </ImageBackground>
@@ -46,6 +47,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: "white",
     marginBottom: 100,
+    borderColor: "black",
+    borderWidth: 2,
   },
   addWrapper: {
     marginTop: 100,
@@ -58,5 +61,10 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     marginBottom: 50,
+  },
+  btn: {
+    backgroundColor: "white",
+    height: 50,
+    width: 50,
   },
 });

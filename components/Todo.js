@@ -1,15 +1,24 @@
 import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-
+import Home from "./Home";
 const Todo = (props) => {
+  const { removeTodo, key, text } = props;
   return (
     <View style={styles.item}>
       <View style={styles.itemLeft}>
         <View style={styles.square}></View>
       </View>
       <Text style={styles.itemText}>{props.text}</Text>
-
-      <View style={styles.circular}></View>
+      <View style={styles.buttonDiv}>
+        <TouchableOpacity onPress={removeTodo}>
+          <View style={styles.circular1}></View>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <View style={styles.circular2}></View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -40,12 +49,25 @@ const styles = StyleSheet.create({
   itemText: {
     maxWidth: "80%",
   },
-  circular: {
-    width: 12,
+  circular1: {
+    width: 20,
     height: 12,
-    borderColor: "black",
-    borderWidth: 2,
+
+    borderWidth: 1,
     borderRadius: 5,
+    backgroundColor: "red",
+  },
+  circular2: {
+    width: 20,
+    height: 12,
+    backgroundColor: "#AAFF00",
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  buttonDiv: {
+    width: 50,
+    justifyContent: "space-between",
+    flexDirection: "row",
   },
 });
 export default Todo;
