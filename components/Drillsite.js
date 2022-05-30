@@ -103,10 +103,13 @@ export default function Drillsite() {
       }
       return item;
     });
+
+    const klart = newTodos.filter((item) => item.completed == true);
     const newTodos1 = todos.filter((item) => item.id != todoId);
     setTodos(newTodos1);
 
-    setDoneTodo(newTodos);
+    setDoneTodo(klart);
+
     console.log(doneTodo);
   };
 
