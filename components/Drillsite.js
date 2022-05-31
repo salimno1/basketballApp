@@ -12,11 +12,8 @@ import {
   ImageBackground,
 } from "react-native";
 
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 const COLORS = { primary: "#1f145c", white: "#fff" };
 
 export default function Drillsite() {
@@ -26,6 +23,61 @@ export default function Drillsite() {
   const [processNext, setProcessNext] = useState([]);
 
   const [doneTodo, setDoneTodo] = useState([]);
+
+  const addDrill = () => {
+    if (textInput == "") {
+      Alert.alert("Please, write a drill");
+    } else {
+      const newDrill = {
+        id: Math.random(),
+        task: textInput,
+        completed: false,
+      };
+      setTodos([...todos, newDrill]);
+      setTextInput("");
+    }
+  };
+  const markProcessItem = (todoId) => {
+    const newTodos = todos.map((item) => {
+      if (item.id == todoId) {
+        return { ...item, completed: true };
+      }
+      return item;
+    });
+
+    const klart = newTodos.filter((item) => item.completed == true);
+    const newTodos1 = todos.filter((item) => item.id != todoId);
+    setTodos(newTodos1);
+
+    setProcessNext([...processNext, klart[0]]);
+  };
+  const markTodoComplete = (todoId) => {
+    const newTodos = processNext.map((item) => {
+      if (item.id == todoId) {
+        return { ...item, completed: false };
+      }
+      return item;
+    });
+
+    const klart = newTodos.filter((item) => item.completed == false);
+    const newTodos1 = processNext.filter((item) => item.id != todoId);
+    setProcessNext(newTodos1);
+
+    setDoneTodo([...doneTodo, klart[0]]);
+
+    console.log(doneTodo);
+  };
+
+  const deleteTodo = (todoId) => {
+    const newTodos = todos.filter((item) => item.id != todoId);
+    setTodos(newTodos);
+  };
+
+  const DeleteAll = () => {
+    setTodos([]);
+    setDoneTodo([]);
+    setProcessNext([]);
+  };
 
   const ListItem = ({ todo }) => {
     return (
@@ -106,61 +158,7 @@ export default function Drillsite() {
       </View>
     );
   };
-  const addDrill = () => {
-    if (textInput == "") {
-      Alert.alert("Please, write a drill");
-    } else {
-      const newDrill = {
-        id: Math.random(),
-        task: textInput,
-        completed: false,
-      };
-      setTodos([...todos, newDrill]);
-      setTextInput("");
-    }
-  };
-  const markProcessItem = (todoId) => {
-    const newTodos = todos.map((item) => {
-      if (item.id == todoId) {
-        return { ...item, completed: true };
-      }
-      return item;
-    });
 
-    const klart = newTodos.filter((item) => item.completed == true);
-    const newTodos1 = todos.filter((item) => item.id != todoId);
-    setTodos(newTodos1);
-
-    setProcessNext([...processNext, klart[0]]);
-  };
-  const markTodoComplete = (todoId) => {
-    const newTodos = processNext.map((item) => {
-      if (item.id == todoId) {
-        return { ...item, completed: false };
-      }
-      return item;
-    });
-
-    const klart = newTodos.filter((item) => item.completed == false);
-    const newTodos1 = processNext.filter((item) => item.id != todoId);
-    setProcessNext(newTodos1);
-
-    setDoneTodo([...doneTodo, klart[0]]);
-
-    console.log(doneTodo);
-  };
-
-  const deleteTodo = (todoId) => {
-    const newTodos = todos.filter((item) => item.id != todoId);
-    setTodos(newTodos);
-  };
-
-  const DeleteAll = () => {
-    setTodos([]);
-    setDoneTodo([]);
-    setProcessNext([]);
-  };
-  const Stack = createNativeStackNavigator();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
