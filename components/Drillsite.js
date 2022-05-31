@@ -22,6 +22,9 @@ const COLORS = { primary: "#1f145c", white: "#fff" };
 export default function Drillsite() {
   const [textInput, setTextInput] = useState("");
   const [todos, setTodos] = useState([]);
+  const [processItem, setProcessItem] = useState([]);
+  const [processNext, setProcessNext] = useState([]);
+
   const [doneTodo, setDoneTodo] = useState([]);
 
   const ListItem = ({ todo }) => {
@@ -42,7 +45,7 @@ export default function Drillsite() {
         {!todo?.completed && (
           <TouchableOpacity
             style={[styles.actionIcon]}
-            onPress={() => markTodoComplete(todo?.id)}
+            onPress={() => markProcessItem(todo?.id)}
           >
             <Icon name="done" size={20} color="white"></Icon>
           </TouchableOpacity>
@@ -58,6 +61,33 @@ export default function Drillsite() {
     );
   };
 
+  const ProccesItem = ({ process }) => {
+    return (
+      <View style={styles.listItem2}>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 17,
+
+              color: "white",
+            }}
+          >
+            {process?.task}
+          </Text>
+        </View>
+        {process?.completed && (
+          <TouchableOpacity
+            style={[styles.actionIcon]}
+            onPress={() => markTodoComplete(process?.id)}
+          >
+            <Icon name="done" size={20} color="white"></Icon>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  };
+
   const DoneItem = ({ done }) => {
     return (
       <View style={styles.listItem1}>
@@ -66,20 +96,13 @@ export default function Drillsite() {
             style={{
               fontWeight: "bold",
               fontSize: 17,
-              textDecorationLine: done?.completed ? "line-through" : "none",
+              textDecorationLine: done?.completed ? "none" : "line-through",
               color: "black",
             }}
           >
             {done?.task}
           </Text>
         </View>
-
-        <TouchableOpacity
-          style={[styles.actionIcon, { backgroundColor: "white" }]}
-          onPress={() => deleteTodo1(done?.id)}
-        >
-          <Icon name="delete" size={20} color="black"></Icon>
-        </TouchableOpacity>
       </View>
     );
   };
@@ -96,7 +119,7 @@ export default function Drillsite() {
       setTextInput("");
     }
   };
-  const markTodoComplete = (todoId) => {
+  const markProcessItem = (todoId) => {
     const newTodos = todos.map((item) => {
       if (item.id == todoId) {
         return { ...item, completed: true };
@@ -108,7 +131,21 @@ export default function Drillsite() {
     const newTodos1 = todos.filter((item) => item.id != todoId);
     setTodos(newTodos1);
 
-    setDoneTodo(klart);
+    setProcessNext([...processNext, klart[0]]);
+  };
+  const markTodoComplete = (todoId) => {
+    const newTodos = processNext.map((item) => {
+      if (item.id == todoId) {
+        return { ...item, completed: false };
+      }
+      return item;
+    });
+
+    const klart = newTodos.filter((item) => item.completed == false);
+    const newTodos1 = processNext.filter((item) => item.id != todoId);
+    setProcessNext(newTodos1);
+
+    setDoneTodo([...doneTodo, klart[0]]);
 
     console.log(doneTodo);
   };
@@ -117,14 +154,11 @@ export default function Drillsite() {
     const newTodos = todos.filter((item) => item.id != todoId);
     setTodos(newTodos);
   };
-  const deleteTodo1 = (todoId) => {
-    const newTodos = todos.filter((item) => item.id != todoId);
-    setDoneTodo(newTodos);
-  };
 
   const DeleteAll = () => {
     setTodos([]);
     setDoneTodo([]);
+    setProcessNext([]);
   };
   const Stack = createNativeStackNavigator();
   return (
@@ -167,6 +201,28 @@ export default function Drillsite() {
           data={todos}
           renderItem={({ item }) => <ListItem todo={item} />}
         />
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 20,
+            fontSize: 24,
+            fontWeight: "bold",
+            color: "black",
+            backgroundColor: "white",
+            width: 95,
+            borderWidth: 2,
+            marginLeft: 50,
+          }}
+        >
+          Process
+        </Text>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ padding: 20, paddingBottom: 100 }}
+          data={processNext}
+          renderItem={({ item }) => <ProccesItem process={item} />}
+        />
+
         <Text
           style={{
             fontWeight: "bold",
@@ -255,6 +311,21 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     width: 300,
     backgroundColor: "black",
+    flexDirection: "row",
+    alignItems: "center",
+
+    borderRadius: 1,
+    marginVertical: 5,
+    height: "auto",
+    borderColor: "white",
+    borderWidth: 1,
+    opacity: 0.7,
+  },
+  listItem2: {
+    padding: 2,
+    paddingLeft: 10,
+    width: 300,
+    backgroundColor: "grey",
     flexDirection: "row",
     alignItems: "center",
 
